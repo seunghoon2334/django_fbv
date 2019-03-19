@@ -11,10 +11,11 @@ def create(request):
     if request.method == 'POST':
         board_form = BoardForm(request.POST)
         if board_form.is_valid():
-            board = Board()
-            board.title = board_form.cleaned_data.get('title')
-            board.content = board_form.cleaned_data.get('content')
-            board.save()
+            # board = Board()
+            # board.title = board_form.cleaned_data.get('title')
+            # board.content = board_form.cleaned_data.get('content')
+            # board.save()
+            board = board_form.save()
             return redirect(board)
     else:
         board_form = BoardForm()
@@ -40,15 +41,27 @@ def delete(request, board_pk):
         return redirect(board)
         
 def update(request, board_pk):
+    # 1. board_pk에 해당하는 오브젝트를 가져온다.
+    #    - 없으면, 404 에러.
+    #    - 있으면, board = Board.objects.get(pk=board_pk)와 동일.
     board = get_object_or_404(Board, pk=board_pk)
+    # 2. POST 요청이면 (사용자가 form을 통해 데이터를 보내 준 것.)
     if request.method == 'POST':
-        board_form = BoardForm(request.POST)
+        # 사용자 입력값(request.POST)을 BoardForm에 전달해주고,
+        board_form = BoardForm(request.POST, instance=board)
+        # 검증 (유효성 체크)
         if board_form.is_valid():
-            board.title = board_form.cleaned_data.get('title')
-            board.content = board_form.cleaned_data.get('content')
-            board.save()
+            # board.title = board_form.cleaned_data.get('title')
+            # board.content = board_form.cleaned_data.get('content')
+            # board.save()
+            board = board_form.save()
             return redirect(board)
+    # 2-2. GET 요청이면 (수정하기 버튼을 눌렀을 때)
     else:
-        board_form = BoardForm(initial=board.__dict__)
+        # BoardForm을 초기화(사용자 입력값을 넣어준 상태)
+        board_form = BoardForm(instance=board)
+    # context에 담겨있는 board_form은 아래와 같이 가능함.
+    # 1 - POST 요청에서 검증에 실패하였을 때, 오류 메세지가 포함된 상태
+    # 2 - GET 요청에서 초기화된 상태
     context = {'board_form': board_form}
     return render(request, 'boards/form.html', context)
