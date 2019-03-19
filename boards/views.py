@@ -19,7 +19,7 @@ def create(request):
     else:
         board_form = BoardForm()
     context = {'board_form':board_form}
-    return render(request, 'boards/create.html', context)
+    return render(request, 'boards/form.html', context)
     
 def detail(request, board_pk):
     # board = Board.objects.get(pk=board_pk)
@@ -38,3 +38,17 @@ def delete(request, board_pk):
         return redirect('boards:index')
     else:
         return redirect(board)
+        
+def update(request, board_pk):
+    board = get_object_or_404(Board, pk=board_pk)
+    if request.method == 'POST':
+        board_form = BoardForm(request.POST)
+        if board_form.is_valid():
+            board.title = board_form.cleaned_data.get('title')
+            board.content = board_form.cleaned_data.get('content')
+            board.save()
+            return redirect(board)
+    else:
+        board_form = BoardForm(initial=board.__dict__)
+    context = {'board_form': board_form}
+    return render(request, 'boards/form.html', context)
