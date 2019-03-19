@@ -1,8 +1,13 @@
 {% extends 'boards/base.html' %}
 {% block body %}
-    <form method='POST'>
-        {% csrf_token %}
-        {{ board_form.as_p }}
-        <input type='submit'>
-    </form>
+{% if request.resolver_match.url_name == 'create' %}
+    <h1>글 생성</h1>
+{% else %}
+    <h1>글 수정</h1>
+{% endif %}
+<form method='POST'>
+    {% csrf_token %}
+    {{ board_form.as_p }}
+    <input type='submit'>
+</form>
 {% endblock %}
