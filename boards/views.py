@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+import hashlib
 from .models import Board
 from .forms import BoardForm
 # Create your views here.
@@ -20,7 +21,9 @@ def create(request):
             # board.title = board_form.cleaned_data.get('title')
             # board.content = board_form.cleaned_data.get('content')
             # board.save()
-            board = board_form.save()
+            board = board_form.save(commit=False)
+            board.user = request.user
+            board.save()
             return redirect(board)
     else:
         board_form = BoardForm()
