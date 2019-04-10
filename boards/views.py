@@ -7,11 +7,7 @@ from .forms import BoardForm
 # @login_required
 def index(request):
     boards = Board.objects.order_by('-pk')
-    if request.user.is_authenticated:
-        gravatar_url = hashlib.md5(request.user.email.strip().lower().encode('utf-8')).hexdigest()
-    else:
-        gravatar_url = None
-    context = {'boards':boards, 'gravatar_url':gravatar_url}
+    context = {'boards':boards}
     return render(request, 'boards/index.html', context)
     
 @login_required
