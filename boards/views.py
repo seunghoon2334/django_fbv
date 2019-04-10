@@ -1,12 +1,17 @@
+import hashlib
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-import hashlib
 from .models import Board
 from .forms import BoardForm
 # Create your views here.
+# @login_required
 def index(request):
     boards = Board.objects.order_by('-pk')
-    context = {'boards':boards}
+    if request.user.is_authenticated:
+        gravatar_url = hashlib.md5(request.user.email.strip().lower().encode('utf-8')).hexdigest()
+    else:
+        gravatar_url = None
+    context = {'boards':boards, 'gravatar_url':gravatar_url}
     return render(request, 'boards/index.html', context)
     
 @login_required

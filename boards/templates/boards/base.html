@@ -10,6 +10,8 @@
 </head>
 <body>
     {% if user.is_authenticated %}
+        {% load gravatar %}
+        <img src="https://s.gravatar.com/avatar/{{ user.email|makehash }}?s=150&d=http://blogfiles.naver.net/MjAxNzAxMjhfMjMg/MDAxNDg1NTM4NTgzMTg5.wQIAgOwOpjFq_OLLDlBmRnssxqciwsLRgqPu1KHSFC0g.hayD5am_jqyN0X2tBd0oP_sz6uTvllqDCRhKW9RPnRYg.JPEG.davle9073/%C6%F7%C4%CF%B8%F3%B0%ED_%B8%DE%C5%B8%B8%F9_%C0%E2%BE%C6%BA%B8%C0%DA_1.jpg">
         <h1>{{ user }}님 환영합니다 :)</h1>
         <a href="{% url 'accounts:logout' %}">로그아웃</a>
         <a href="{% url 'accounts:update' %}">프로필수정</a>
