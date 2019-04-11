@@ -7,17 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FBV</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .hi {
+            display: flex;
+        }
+        .hi > img {
+            height: 150px;
+        }
+    </style>
 </head>
 <body>
+    {% if messages %}
+    <!--<ul class="messages">-->
+        {% for message in messages %}
+        <div{% if message.tags %} class="alert alert-{{ message.tags }}" role='alert'{% endif %}>{{ message }}</div>
+        {% endfor %}
+    <!--</ul>-->
+    {% endif %}
     {% if user.is_authenticated %}
         {% load gravatar %}
-        <img src="https://s.gravatar.com/avatar/{{ user.email|makehash }}?s=150&d=http://blogfiles.naver.net/MjAxNzAxMjhfMjMg/MDAxNDg1NTM4NTgzMTg5.wQIAgOwOpjFq_OLLDlBmRnssxqciwsLRgqPu1KHSFC0g.hayD5am_jqyN0X2tBd0oP_sz6uTvllqDCRhKW9RPnRYg.JPEG.davle9073/%C6%F7%C4%CF%B8%F3%B0%ED_%B8%DE%C5%B8%B8%F9_%C0%E2%BE%C6%BA%B8%C0%DA_1.jpg">
+        <div class="hi">
+        <img src="https://s.gravatar.com/avatar/{{ user.email|makehash }}?s=50&d=http://blogfiles.naver.net/MjAxNzAxMjhfMjMg/MDAxNDg1NTM4NTgzMTg5.wQIAgOwOpjFq_OLLDlBmRnssxqciwsLRgqPu1KHSFC0g.hayD5am_jqyN0X2tBd0oP_sz6uTvllqDCRhKW9RPnRYg.JPEG.davle9073/%C6%F7%C4%CF%B8%F3%B0%ED_%B8%DE%C5%B8%B8%F9_%C0%E2%BE%C6%BA%B8%C0%DA_1.jpg">
         <h1>{{ user }}님 환영합니다 :)</h1>
+        </div>
         <a href="{% url 'accounts:logout' %}">로그아웃</a>
         <a href="{% url 'accounts:update' %}">프로필수정</a>
-        <form action="{% url 'accounts:delete' %}" method='POST' onsubmit='return confirm(탈퇴할거야?)"'>
+        <form action="{% url 'accounts:delete' %}" method="POST" onsubmit="return confirm('탈퇴할거야?')">
             {% csrf_token %}
-            <input type='submit' value='회원탈퇴'>
+            <input type="submit" value="회원탈퇴">
         </form>
     {% else %}
         <a href="{% url 'accounts:signup' %}">회원가입</a>

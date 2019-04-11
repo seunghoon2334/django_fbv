@@ -1,6 +1,7 @@
 import pprint
 from django.shortcuts import render, redirect
 # from .forms import UserForm
+from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -19,7 +20,9 @@ def signup(request):
         if user_form.is_valid():
             user = user_form.save()
             auth_login(request, user)
+            messages.info(request, f'{user.username}님, 회원가입 성공!')
             return redirect('boards:index')
+        messages.warning(request, '양식을 다시 확인해주세요.')
     else:
         user_form = UserCustomCreationForm()
     context = {'user_form': user_form}
@@ -32,6 +35,7 @@ def login(request):
         login_form = AuthenticationForm(request, request.POST)
         if login_form.is_valid():
             auth_login(request, login_form.get_user())
+            messages.info(request, f'{user.username}님, 로그인 성공!')
             return redirect('boards:index')
     else:
         login_form = AuthenticationForm()

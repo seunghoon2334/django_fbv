@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'boards',
     'accounts',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # LOGIN_URL = '/accounts/login'
 # AUTH_USER_MODEL = 'auth.User'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

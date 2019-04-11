@@ -1,0 +1,12 @@
+{% extends 'boards/base.html' %}
+{% block body %}
+    <h1>프로필</h1>
+    <p>{{ user_detail.pk }}</p>
+    <p>{{ user_detail.username }}</p>
+    <p>{{ user_detail.email }}</p>
+    {% for board in user_boards %}
+        <p>{{ board.title }}</p>
+    {% empty %}
+        <p>글을 작성해주세요</p>
+    {% endfor %}
+{% endblock %}
